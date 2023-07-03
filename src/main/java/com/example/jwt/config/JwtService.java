@@ -33,9 +33,15 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+//        I added it
+        String role = userDetails.getAuthorities().toString();
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+        claims.putAll(extraClaims);
+//
         return Jwts
                 .builder()
-                .setClaims(extraClaims)
+                .setClaims(claims) // extraClaims
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
@@ -52,7 +58,7 @@ public class JwtService {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
