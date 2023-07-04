@@ -15,5 +15,6 @@ import java.util.Date;
 public class AuthenticationResponse {
     private String token;
     private Date expirationDate;
+    private boolean isActive;
     private String role;
 }

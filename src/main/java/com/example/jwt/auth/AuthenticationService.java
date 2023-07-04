@@ -25,7 +25,8 @@ public class AuthenticationService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
+                .isActive(true)
                 .build();
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
@@ -40,6 +41,11 @@ public class AuthenticationService {
                 )
         );
         var user = repository.findByEmail(request.getEmail()).orElseThrow();
+//        check if the user is activated
+        if (!user.isActive()) {
+            throw new RuntimeException("Account is not activated");
+        }
+//
         var jwtToken = jwtService.generateToken(user);
 //        return  AuthenticationResponse.builder().token(jwtToken).build();
         var response = AuthenticationResponse.builder()

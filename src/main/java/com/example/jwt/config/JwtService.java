@@ -34,14 +34,14 @@ public class JwtService {
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 //        I added it
-        String role = userDetails.getAuthorities().toString();
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
-        claims.putAll(extraClaims);
+//        String role = userDetails.getAuthorities().toString();
+//        Map<String, Object> claims = new HashMap<>();
+//        claims.put("role", role);
+//        claims.putAll(extraClaims);
 //
         return Jwts
                 .builder()
-                .setClaims(claims) // extraClaims
+                .setClaims(extraClaims) // extraClaims
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
